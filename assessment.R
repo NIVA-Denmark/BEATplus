@@ -125,9 +125,9 @@ Assessment<- function(assessmentdata,summarylevel=1){
       }
     }
     Indicators<-assessmentdata #%>%
-    IndicatorDownload<- assessmentdata %>% left_join(rename(dataSpecies,EQRspecies=EQR),by = c("Group", "SpeciesGroup", "Species", "SpatialAssessmentUnit")) %>%
-      left_join(rename(dataSpeciesGroup,EQRspeciesGrp=EQR), by = c("Group", "SpeciesGroup", "SpatialAssessmentUnit", "IndCount")) %>%
-      left_join(rename(QEdata,EQRgrp=EQR), by = c("Group", "SpatialAssessmentUnit", "IndCount"))
+    IndicatorDownload<- assessmentdata %>% left_join(rename(dataSpecies,EQR_Species=EQR),by = c("Group", "SpeciesGroup", "Species", "SpatialAssessmentUnit")) %>%
+      left_join(rename(dataSpeciesGroup,EQR_SpeciesGroup=EQR), by = c("Group", "SpeciesGroup", "SpatialAssessmentUnit")) %>%
+      left_join(rename(QEdata,EQR_Group=EQR), by = c("Group", "SpatialAssessmentUnit"))
 
     if(summarylevel==1){
       return(Indicators)

@@ -58,9 +58,12 @@ ui <- fluidPage(
       tabPanel("Assessment Units", 
                uiOutput("AssessmentUnits")),
       tabPanel("Download",
-               downloadButton('downloadIndicators', 'Download Indicator Results'),
-               downloadButton('downloadGroups', 'Download Group Results'),
-               downloadButton('downloadAssessmentUnits', 'Download Assessment Unit Results')
+               p(downloadButton('downloadIndicators', 'Download Indicator Results'),
+                 "EQR value for each indicator, including aggregated results"),
+               p(downloadButton('downloadGroups', 'Download Group Results'),
+                 "Aggregated results at Group Level"),
+               p(downloadButton('downloadAssessmentUnits', 'Download Assessment Unit Results'),
+                 "Aggregated results per Assessment Unit")
                
       )
     ) # tabset panel
@@ -77,7 +80,7 @@ server <- function(input, output, session) {
   output$caption <- renderText(input$num)
   
   
-  addResourcePath("data","./data/")
+  #addResourcePath("data","./data/")
   
   sepchar<-reactive({
     sep<-","
