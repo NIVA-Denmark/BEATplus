@@ -34,7 +34,7 @@ Assessment<- function(assessmentdata,summarylevel=1){
     }
   }
   
-  
+  assessmentdata <- proper(assessmentdata)
   
   n<-sum(ok, na.rm = TRUE)
   
@@ -299,7 +299,16 @@ AddColours<-function(CRsum){
   return(co)
 }
 
-
+#===============================================================================
+# Convert columns to "proper" (first letter in word capitalized, others lower case)
+proper<-function(df,collist=c("Group","SpeciesGroup","Species")){
+  for(iCol in collist){
+    if(iCol %in% names(df)){
+      df[,iCol]<-gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(df[,iCol]), perl=TRUE)
+    }
+  }
+  return(df)
+}
 
 
 
