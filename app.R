@@ -1,4 +1,4 @@
-options(shiny.maxRequestSize=10*1024^2)
+options(shiny.maxRequestSize=100*1024^2)
 rm(list = ls())
 library(shiny)
 library(readr)
@@ -48,7 +48,8 @@ ui <- fluidPage(
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Data", tableOutput("InDatatable")),
+      tabPanel("Data", tableOutput("InDatatable"),
+               uiOutput("Warning")),
       tabPanel("Species", 
                uiOutput("Species2")),  
       tabPanel("SpeciesGroups", 
@@ -152,6 +153,14 @@ server <- function(input, output, session) {
     out<-Assessment(df,6)
     return(out)
   })
+  AssessmentErrors <- reactive({
+    df<-filedata()
+    if (is.null(df)){return(NULL)} 
+    out<-Assessment(df,0)
+    return(out)
+  })
+  
+
   
   
   CHASEplot<- reactive({
@@ -234,7 +243,9 @@ server <- function(input, output, session) {
       , tableOutput("Species")
     )})
   
-  
+  output$Warning <- renderUI({
+    AssessmentErrors()
+  })
   
   }
 

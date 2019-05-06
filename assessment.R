@@ -37,13 +37,15 @@ Assessment<- function(assessmentdata,summarylevel=1){
   assessmentdata <- proper(assessmentdata)
   
   n<-sum(ok, na.rm = TRUE)
-  
+  Errors <- ""
   if(n<nreq){
     # The required columns were not found in the input data
     message("Error! Required column(s) were not found in the input data:")
+    Errors <- "Error! Required column(s) were not found in the input data:\n"
     for (j in 1:nreq){
       if(ok[j]!=1){
         message(paste("    ",requiredcols[j]))
+        Errors<-paste0(Errors,"    ",requiredcols[j],"\n")
       }
     }
     if(summarylevel==1){
@@ -129,7 +131,9 @@ Assessment<- function(assessmentdata,summarylevel=1){
       left_join(rename(dataSpeciesGroup,EQR_SpeciesGroup=EQR), by = c("Group", "SpeciesGroup", "SpatialAssessmentUnit")) %>%
       left_join(rename(QEdata,EQR_Group=EQR), by = c("Group", "SpatialAssessmentUnit"))
 
-    if(summarylevel==1){
+    if(summarylevel==0){
+      return(Errors)
+    }else if(summarylevel==1){
       return(Indicators)
     }else if(summarylevel==2){
       return(QEspr)
@@ -141,8 +145,10 @@ Assessment<- function(assessmentdata,summarylevel=1){
       return(QEdata)
     }else if(summarylevel==6){
       return(OverallQE)
-    }else{
+    }else if(summarylevel==7){
       return(IndicatorDownload)
+    }else{
+      # no summary level
     }
     #
   }
